@@ -1,5 +1,6 @@
 #include "BelicaAnimInstance.h"
 #include "MyCharacter.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 void UBelicaAnimInstance::UpdateAnimationProperties(float DeltaTime)
@@ -19,6 +20,10 @@ void UBelicaAnimInstance::UpdateAnimationProperties(float DeltaTime)
 			bIsAccelerating = true;
 		else
 			bIsAccelerating = false;
+
+		FRotator BaseAimRotation = Belica->GetBaseAimRotation();
+		FRotator VelocityBasedRotation = UKismetMathLibrary::MakeRotFromX(Belica->GetVelocity());
+		StrafingValue = UKismetMathLibrary::NormalizedDeltaRotator(BaseAimRotation, VelocityBasedRotation).Yaw;
 	}
 }
 
